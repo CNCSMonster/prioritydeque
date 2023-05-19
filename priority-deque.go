@@ -103,6 +103,32 @@ func (priorityDeque PriorityDeque) Min() any {
 	return priorityDeque.minHeap.Arr[0].v
 }
 
+// this method will replace Max value with the given value,and Fix the heap from the place
+// which equals to pop max value and push the given value in it,but will work faster,which takes O(logn) time
+// the old max value will be returned
+func (priorityDeque *PriorityDeque) ReplaceMax(v any) any {
+	maxPDN := priorityDeque.maxHeap.Arr[0]
+	out := maxPDN.v
+	maxPDN.v = v
+	minIndex := maxPDN.minIndex
+	heap.Fix(&priorityDeque.maxHeap, 0)
+	heap.Fix(&priorityDeque.minHeap, minIndex)
+	return out
+}
+
+// this method will replace Min value with the given value,and Fix the heap from the place
+// which equals to pop min value and push the given value in it,but will work faster,which takes O(logn) time
+// the old min value will be returned
+func (priorityDeque *PriorityDeque) ReplaceMin(v any) any {
+	minPDN := priorityDeque.minHeap.Arr[0]
+	out := minPDN.v
+	minPDN.v = v
+	maxIndex := minPDN.maxIndex
+	heap.Fix(&priorityDeque.minHeap, 0)
+	heap.Fix(&priorityDeque.maxHeap, maxIndex)
+	return out
+}
+
 // get num of elements still in prioritydeque,taking O(1) time (which depends on a efficient built-in function len)
 func (priorityDeque PriorityDeque) Len() int {
 	return priorityDeque.minHeap.Len()

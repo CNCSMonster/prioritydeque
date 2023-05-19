@@ -58,6 +58,14 @@ func New(Less func(v1, v2 any) bool) *PriorityDeque {
 	return out
 }
 
+func FromSlice(Less func(v1, v2 any) bool, v ...any) *PriorityDeque {
+	out := New(Less)
+	for _, v := range v {
+		out.Push(v)
+	}
+	return out
+}
+
 // push any value in the priorityque,which will take O(logn) time
 func (priorityDeque *PriorityDeque) Push(v any) {
 	toPush := &priorityDequeNode{

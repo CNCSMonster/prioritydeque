@@ -3,7 +3,7 @@
 it is developed based on "container/heap",which is a standard library
 
 with this data structure,you can push data in it with 
-O(n) time-complexity,and get the min or max value of all the values in it with O(logn) time-complexity.
+O(logn) time-complexity,and get the min or max value of all the values in it with O(1) time-complexity.
 you can also use PopMax or PopMin to remove the  max or min value in it.
 for now,it has not been able to remove any value from it yet.
 

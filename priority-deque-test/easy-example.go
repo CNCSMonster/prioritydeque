@@ -2,8 +2,8 @@
 package main
 
 import (
+	"cncsmonster/prioritydeque"
 	"fmt"
-	"prioritydeque"
 )
 
 func main() {

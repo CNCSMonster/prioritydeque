@@ -1,3 +1,3 @@
-module cncsmonster/prioritydeque
+module github.com/cncsmonster/prioritydeque
 
 go 1.19

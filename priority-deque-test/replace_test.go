@@ -42,3 +42,51 @@ func TestReplace(t *testing.T) {
 		t.Error("want", want, ",get", get)
 	}
 }
+
+func TestReplaceMatched(t *testing.T) {
+	pq := prioritydeque.FromSlice(
+		func(a, b any) bool {
+			return a.(int) < b.(int)
+		}, 12, 3, 3, 55, 55,
+	)
+	if fmt.Sprintf("%d,%d", pq.Min(), pq.Max()) != "3,55" {
+		t.Error(fmt.Sprintf("%d,%d", pq.Min(), pq.Max()), "3,55")
+	}
+	match := func(v int) func(any) bool {
+		return func(x any) bool {
+			return x.(int) == v
+		}
+	}
+	pq.Replace(match(3), 4)
+	if fmt.Sprintf("%d,%d", pq.Min(), pq.Max()) != "3,55" {
+		t.Error(fmt.Sprintf("%d,%d", pq.Min(), pq.Max()), "3,55")
+	}
+	pq.Replace(match(55), 32)
+	if fmt.Sprintf("%d,%d", pq.Min(), pq.Max()) != "3,55" {
+		t.Error(fmt.Sprintf("%d,%d", pq.Min(), pq.Max()), "3,55")
+	}
+}
+
+func TestReplaceAllMatched(t *testing.T) {
+	pq := prioritydeque.FromSlice(
+		func(a, b any) bool {
+			return a.(int) < b.(int)
+		}, 12, 3, 3, 55, 55,
+	)
+	if fmt.Sprintf("%d,%d", pq.Min(), pq.Max()) != "3,55" {
+		t.Error(fmt.Sprintf("%d,%d", pq.Min(), pq.Max()), "3,55")
+	}
+	match := func(v int) func(any) bool {
+		return func(x any) bool {
+			return x.(int) == v
+		}
+	}
+	pq.ReplaceAll(match(3), 4)
+	if fmt.Sprintf("%d,%d", pq.Min(), pq.Max()) != "4,55" {
+		t.Error(fmt.Sprintf("%d,%d", pq.Min(), pq.Max()), "4,55")
+	}
+	pq.ReplaceAll(match(55), 32)
+	if fmt.Sprintf("%d,%d", pq.Min(), pq.Max()) != "4,32" {
+		t.Error(fmt.Sprintf("%d,%d", pq.Min(), pq.Max()), "4,32")
+	}
+}

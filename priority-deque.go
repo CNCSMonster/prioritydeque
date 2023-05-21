@@ -1,7 +1,9 @@
 // a double end priority queue based on container/heap
 package prioritydeque
 
-import "container/heap"
+import (
+	"container/heap"
+)
 
 type priorityDequeNode struct {
 	v        any
@@ -127,6 +129,36 @@ func (priorityDeque *PriorityDeque) ReplaceMin(v any) any {
 	heap.Fix(&priorityDeque.minHeap, 0)
 	heap.Fix(&priorityDeque.maxHeap, maxIndex)
 	return out
+}
+
+// replace one and only one certain value v where match(v)==true with new value newV
+func (priorityDeque *PriorityDeque) Replace(match func(any) bool, newV any) {
+	for _, node := range priorityDeque.maxHeap.Arr {
+		if match(node.v) {
+			heap.Fix(&priorityDeque.maxHeap, node.maxIndex)
+			heap.Fix(&priorityDeque.minHeap, node.minIndex)
+			break
+		}
+	}
+}
+
+// replace all value  where match(value)=true with new value newV
+func (priorityDeque *PriorityDeque) ReplaceAll(match func(any) bool, newV any) {
+	for {
+		ifFinished := true
+		for _, node := range priorityDeque.maxHeap.Arr {
+			if match(node.v) {
+				node.v = newV
+				heap.Fix(&priorityDeque.maxHeap, node.maxIndex)
+				heap.Fix(&priorityDeque.minHeap, node.minIndex)
+				ifFinished = false
+				break
+			}
+		}
+		if ifFinished {
+			break
+		}
+	}
 }
 
 // get num of elements still in prioritydeque,taking O(1) time (which depends on a efficient built-in function len)
